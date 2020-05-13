@@ -1,0 +1,8 @@
+Package: noe
+Section: misc
+Priority: optional
+Version: 0.0.0.1
+Architecture: all
+Maintainer: Eli Florêncio Pereira <elip@elipereira.com.br>
+Depends: tar, gzip
+Description: É um programa que faz backup dos seus arquivos

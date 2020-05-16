@@ -11,17 +11,24 @@ def main():
     config.read("/etc/noe/noe.conf")
 
     for section in config.sections():
-        folder_dest = config.get(section, 'folder_dest')
-        folder_backup = config.get(section, 'folder_backup')
         type_backup = config.get(section, 'type_backup')
-        file = PurePath(folder_backup).name
+        folder_backup = config.get(section, 'folder_backup')
+        folder_dest = config.get(section, 'folder_dest')
+
+        if folder_dest == "/":
+            file = "root"
+        else:
+            file = PurePath(folder_backup).name
+
         filename = "{0}-{1}-{2}".format(file, section, date.today())
+        exclude_list_file = config.get(section, 'exclude_list_file')
 
         if not os.path.isdir(folder_dest):
             os.mkdir(folder_dest)
 
         if type_backup == 'local':
-            os.system("tar -zcvf {0}/{1}.tar.gz {2}".format(folder_dest, filename, folder_backup))
+            os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
+                      .format(exclude_list_file, folder_dest, filename, folder_backup))
 
 
 if __name__ == '__main__':

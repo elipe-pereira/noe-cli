@@ -1,0 +1,2 @@
+#!/bin/bash
+ln -s /usr/share/noe/noe.py /usr/bin/noe

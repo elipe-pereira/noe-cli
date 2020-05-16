@@ -15,7 +15,7 @@ def main():
         folder_backup = config.get(section, 'folder_backup')
         folder_dest = config.get(section, 'folder_dest')
 
-        if folder_dest == "/":
+        if folder_backup == "/":
             file = "root"
         else:
             file = PurePath(folder_backup).name

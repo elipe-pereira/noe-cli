@@ -48,7 +48,7 @@ def main():
             tmp_file = "/tmp/.passwd-s3fs"
 
             os.system("echo {0}:{1} > {2}".format(access_key, secret_access_key, tmp_file))
-            os.system("s3fs {0} {1} -o passwd_file={2} -o use_path_request_style"
+            os.system("s3fs {0} {1} -o passwd_file={2} -o use_path_request_style -o nonempty"
                       .format(bucket_name, folder_dest, tmp_file))
             os.system("umount {0}".format(folder_dest))
 

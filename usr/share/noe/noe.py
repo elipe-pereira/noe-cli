@@ -33,18 +33,13 @@ def main():
         if not os.path.isdir(folder_dest):
             os.mkdir(folder_dest)
 
-        if type_backup == 'local':
+        if type_backup == "local":
             os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
                       .format(exclude_list_file, folder_dest, filename, folder_backup))
         elif type_backup == "samba":
-            ret = os.system("mount //{0}/{1} {2} -o username={3},password={4}"
+            os.system("mount //{0}/{1} {2} -o username={3},password={4} || exit 1"
                             .format(host, remote_share, folder_dest, user, password))
-            print (ret)
-
-            if ret == 1:
-                print("Houve um problema na montagem do compartilhamento")
-            else:
-                os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
+            os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
                           .format(exclude_list_file, folder_dest, filename, folder_backup))
         else:
             print("Tipo de backup não válido")

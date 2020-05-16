@@ -34,14 +34,14 @@ def main():
             os.mkdir(folder_dest)
 
         if type_backup == "local":
-            os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
-                      .format(exclude_list_file, folder_dest, filename, folder_backup))
+            os.system("tar --exclude-from={0} --exclude={1} -zcvf {2}/{3}.tar.gz {4}"
+                      .format(exclude_list_file, folder_dest, folder_dest, filename, folder_backup))
 
         elif type_backup == "samba":
             os.system("mount //{0}/{1} {2} -o username={3},password={4} || exit 1"
                             .format(host, remote_share, folder_dest, user, password))
-            os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
-                          .format(exclude_list_file, folder_dest, filename, folder_backup))
+            os.system("tar --exclude-from={0} --exclude={1} -zcvf {2}/{3}.tar.gz {4}"
+                          .format(exclude_list_file, folder_dest, folder_dest, filename, folder_backup))
             os.system("umount {0}".format(folder_dest))
 
         elif type_backup == "bucket":
@@ -51,8 +51,8 @@ def main():
             os.chmod(tmp_file, 0O600)
             os.system("s3fs {0} {1} -o passwd_file={2} -o use_path_request_style"
                       .format(bucket_name, folder_dest, tmp_file))
-            os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
-                      .format(exclude_list_file, folder_dest, filename, folder_backup))
+            os.system("tar --exclude-from={0} --exclude={1} -zcvf {2}/{3}.tar.gz {4}"
+                      .format(exclude_list_file, folder_dest, folder_dest, filename, folder_backup))
             os.system("umount {0}".format(folder_dest))
 
         else:

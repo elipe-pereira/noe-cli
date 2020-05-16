@@ -1,4 +1,3 @@
 /proc
 /sys
 /dev
-/mnt/backup

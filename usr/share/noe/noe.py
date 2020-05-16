@@ -36,11 +36,22 @@ def main():
         if type_backup == "local":
             os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
                       .format(exclude_list_file, folder_dest, filename, folder_backup))
+
         elif type_backup == "samba":
             os.system("mount //{0}/{1} {2} -o username={3},password={4} || exit 1"
                             .format(host, remote_share, folder_dest, user, password))
             os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
                           .format(exclude_list_file, folder_dest, filename, folder_backup))
+            os.system("umount {0}".format(folder_dest))
+
+        elif type_backup == "bucket":
+            tmp_file = "/tmp/.passwd-s3fs"
+
+            os.system("echo {0}:{1} > {2}".format(access_key, secret_access_key, tmp_file))
+            os.system("s3fs {0} {1} -o passwd_file={2} -o use_path_request_style"
+                      .format(bucket_name, folder_dest, tmp_file))
+            os.system("umount {0}".format(folder_dest))
+
         else:
             print("Tipo de backup não válido")
 

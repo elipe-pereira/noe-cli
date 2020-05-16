@@ -1,8 +1,8 @@
 Package: noe
 Section: misc
 Priority: optional
-Version: 0.0.0.9
+Version: 0.0.0.10
 Architecture: all
 Maintainer: Eli Florêncio Pereira <elip@elipereira.com.br>
-Depends: tar, gzip, cifs-utils
+Depends: tar, gzip, cifs-utils, s3fs
 Description: É um programa que faz backup dos seus arquivos

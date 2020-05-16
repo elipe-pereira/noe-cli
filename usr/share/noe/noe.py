@@ -48,8 +48,11 @@ def main():
             tmp_file = "/tmp/.passwd-s3fs"
 
             os.system("echo {0}:{1} > {2}".format(access_key, secret_access_key, tmp_file))
-            os.system("s3fs {0} {1} -o passwd_file={2} -o use_path_request_style -o nonempty"
+            os.chmod(tmp_file, 0O600)
+            os.system("s3fs {0} {1} -o passwd_file={2} -o use_path_request_style"
                       .format(bucket_name, folder_dest, tmp_file))
+            os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
+                      .format(exclude_list_file, folder_dest, filename, folder_backup))
             os.system("umount {0}".format(folder_dest))
 
         else:

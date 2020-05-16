@@ -37,8 +37,10 @@ def main():
             os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
                       .format(exclude_list_file, folder_dest, filename, folder_backup))
         elif type_backup == "samba":
-            ret = os.system("mount //{0}/{1} {2} -o username={3},password={4} || exit 1"
+            ret = os.system("mount //{0}/{1} {2} -o username={3},password={4}"
                             .format(host, remote_share, folder_dest, user, password))
+            print (ret)
+
             if ret == 1:
                 print("Houve um problema na montagem do compartilhamento")
             else:

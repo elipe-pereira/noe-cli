@@ -14,6 +14,13 @@ def main():
         type_backup = config.get(section, 'type_backup')
         folder_backup = config.get(section, 'folder_backup')
         folder_dest = config.get(section, 'folder_dest')
+        remote_share = config.get(section, 'remote_share')
+        host = config.get(section, 'host')
+        user = config.get(section, 'user')
+        password = config.get(section, 'password')
+        bucket_name = config.get(section, 'bucket_name')
+        access_key = config.get(section, 'access_key')
+        secret_access_key = config.get(section, 'secret_access_key')
 
         if folder_backup == "/":
             file = "full"
@@ -29,6 +36,16 @@ def main():
         if type_backup == 'local':
             os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
                       .format(exclude_list_file, folder_dest, filename, folder_backup))
+        elif type_backup == "samba":
+            ret = os.system("mount //{0}/{1} {2} -o username={3},password={4} || exit 1"
+                            .format(host, remote_share, folder_dest, user, password))
+            if ret == 1:
+                print("Houve um problema na montagem do compartilhamento")
+            else:
+                os.system("tar --exclude-from={0} -zcvf {1}/{2}.tar.gz {3}"
+                          .format(exclude_list_file, folder_dest, filename, folder_backup))
+        else:
+            print("Tipo de backup não válido")
 
 
 if __name__ == '__main__':

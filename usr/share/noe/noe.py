@@ -3,7 +3,6 @@
 import os
 import configparser
 from datetime import date
-from pathlib import PurePath
 
 
 def main():
@@ -25,7 +24,7 @@ def main():
         if folder_backup == "/":
             file = "full"
         else:
-            file = PurePath(folder_backup).name
+            file = "partial"
 
         filename = "{0}-{1}-{2}".format(file, section, date.today())
         exclude_list_file = config.get(section, 'exclude_list_file')

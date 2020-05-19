@@ -11,7 +11,7 @@ class Mount(object):
     def mountBucket(self, access_key, secret_access_key, tmp_file, bucket_name, folder_dest):
         os.system("echo {0}:{1} > {2}".format(access_key, secret_access_key, tmp_file))
         os.chmod(tmp_file, 0o600)
-        os.system("s3fs {0} {1} -o passwd_file={2} -o use_path_request_style"
+        os.system("s3fs {0} {1} -o passwd_file={2} -o use_path_request_style -o nonempty"
                   .format(bucket_name, folder_dest, tmp_file))
 
     def umount(self,folder_dest):

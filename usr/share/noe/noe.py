@@ -3,7 +3,7 @@
 import os
 import sys
 from datetime import date
-sys.path.insert("0", "/usr/lib/noe")
+sys.path.insert(0, "/usr/lib/noe")
 from .Config import Config
 from .Backup import Backup
 from .Mount import Mount

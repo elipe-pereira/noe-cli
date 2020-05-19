@@ -1,7 +1,7 @@
 #!/bin/bash
 
 filename="/etc/noe/noe.conf"
-filename_mv="/etc/noe.conf.old"
+filename_mv="/etc/noe/noe.conf.old"
 if [[ -f "${filename}" ]];then
     mv "${filename}" "${filename_mv}"
 fi

@@ -50,8 +50,8 @@ class Config(object):
     def getRemoteShareConfig(self):
         return self._remote_share
 
-    def setHostConfig(self, host):
-        self._host = host
+    def setHostConfig(self, section, host):
+        self._host = self._config.get(section, host)
 
     def getHostConfig(self):
         return self._host

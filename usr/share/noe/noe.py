@@ -17,9 +17,6 @@ def main():
     service_config = Config()
     command_exec = Services()
 
-    config.set_config_file("/etc/noe/noe.conf")
-    config.set_config_parser()
-
     service_config.set_config_file('/etc/noe/services.conf')
     service_config.set_config_parser()
     
@@ -44,6 +41,9 @@ def main():
         else:
             continue
 
+    config.set_config_file("/etc/noe/noe.conf")
+    config.set_config_parser()
+
 
     for section in sections:
         config.setTypeConfig(section, 'type_backup')
@@ -60,8 +60,6 @@ def main():
         config.setExcludeListFile(section, 'exclude_list_file')
 
         
-
-
         type_backup = config.getTypeConfig()
         folder_backup = config.getFolderConfig()
         folder_dest = config.getFolderDestConfig()

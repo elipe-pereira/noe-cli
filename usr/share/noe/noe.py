@@ -19,8 +19,6 @@ def main():
 
     service_config.set_config_file('/etc/noe/services.conf')
     service_config.set_config_parser()
-    
-    sections = config.getSectionsConfig()
     services = service_config.getSectionsConfig()
 
     for service in services:
@@ -43,6 +41,7 @@ def main():
 
     config.set_config_file("/etc/noe/noe.conf")
     config.set_config_parser()
+    sections = config.getSectionsConfig()
 
 
     for section in sections:
@@ -94,6 +93,10 @@ def main():
         else:
             print("Tipo de backup não válido")
 
+
+    service_config.set_config_file('/etc/noe/services.conf')
+    service_config.set_config_parser()
+    services = service_config.getSectionsConfig()
 
     for service in services:
         service_config.set_enabled(service, 'enabled')

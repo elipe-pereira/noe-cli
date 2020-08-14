@@ -1,7 +1,7 @@
 Package: hanokh-noe-backup-tool
 Section: misc
 Priority: optional
-Version: 0.1.2
+Version: 0.2.3
 Architecture: all
 Maintainer: Eli Florêncio Pereira <elip@elipereira.com.br>
 Depends: tar, gzip, cifs-utils, s3fs

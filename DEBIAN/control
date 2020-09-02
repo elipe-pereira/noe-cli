@@ -1,8 +1,0 @@
-Package: hanokh-noe-backup-tool
-Section: misc
-Priority: optional
-Version: 0.2.4.0
-Architecture: all
-Maintainer: Eli Florêncio Pereira <elip@elipereira.com.br>
-Depends: tar, gzip, cifs-utils, s3fs
-Description: É um programa que faz backup dos seus arquivos

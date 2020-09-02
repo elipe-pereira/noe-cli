@@ -1,9 +1,0 @@
-#!/bin/bash
-ln -s /usr/share/noe/noe.py /usr/bin/noe
-filename="/etc/noe/noe.conf"
-filename_mv="/etc/noe/noe.conf-dpkg-new"
-filename_old="/etc/noe/noe.conf.old"
-if [[ -f "${filename_old}" ]];then
-    mv "${filename}" "${filename_mv}"
-    mv "${filename_old}" "${filename}"
-fi

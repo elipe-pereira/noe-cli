@@ -14,7 +14,7 @@ from Mail import Mail
 def main():
     main_file_exec_path = os.path.realpath(sys.argv[0])
     working_dir = os.path.dirname(main_file_exec_path)
-    config_file = working_dir + "/config/noe.conf"
+    config_file = working_dir + "/config/noe/noe.conf"
     
     config = Config(config_file)
     backup = Backup()
@@ -49,7 +49,6 @@ def main():
         config.set_command_start(section, 'command_services_start')
         config.set_mail_address(section, 'mail_address')
 
-        
         type_backup = config.get_type_config()
         folder_backup = config.get_folder_config()
         folder_dest = config.get_folder_dest_config()
@@ -68,18 +67,15 @@ def main():
         command_start = config.get_command_start().split(',')
         mail_address = config.get_mail_address()
 
-        if (enable_stop_services == "yes"):
+        if enable_stop_services == "yes":
             log.log("Parando serviços")
             for command in command_stop:
                 command_exec.stop_service(command)
-
-
 
         if not os.path.isdir(folder_dest):
             os.mkdir(folder_dest)
 
         os.system("tmpwatch {0} {1}".format(time_keep, folder_dest))
-
 
         if type_backup == "local":
             log.log("Backup do tipo local")
@@ -96,7 +92,6 @@ def main():
             os.system("onedrive --synchronize --upload-only --no-remote-delete")
             log.log("Envio concluído")
 
-
         elif type_backup == "samba":
             log.log("Executando backup do tipo samba")
             log.log("Montando compartilhamento")
@@ -106,27 +101,22 @@ def main():
             log.log("Desmontando compartilhamento")
             mount.umount(folder_dest)
 
-
         elif type_backup == "bucket":
             tmp_file = "/tmp/.passwd-s3fs"
             mount.mountBucket(access_key, secret_access_key, tmp_file, bucket_name, folder_dest)
             backup.run(exclude_list_file, folder_dest, filename, folder_backup)
             mount.umount(folder_dest)
 
-
         else:
             print("Tipo de backup não válido")
 
-
-        if (enable_stop_services == "yes"):
+        if enable_stop_services == "yes":
             log.log("Subindo serviços")
             for command in command_start:
                 command_exec.start_service(command)
 
         log.log("Enviando E-mail")
         mail.send("Backup NOE", mail_address)
-
-
 
 
 if __name__ == '__main__':

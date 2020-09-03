@@ -3,7 +3,8 @@
 
 import os
 
+
 class Mail(object):
-	
-	def send(self, subject, mail_address):
+	@staticmethod
+	def send(subject, mail_address):
 		os.system("cat /var/log/noe.log|mutt -s '{0}' {1}".format(subject, mail_address))

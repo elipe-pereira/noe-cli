@@ -39,6 +39,7 @@ def main():
         config.set_host_config(section, 'host')
         config.set_user_config(section, 'user')
         config.set_password_config(section, 'password')
+        config.set_database(section, 'database')
         config.set_bucket_name_config(section, 'bucket_name')
         config.set_access_key_config(section, 'access_key')
         config.set_secret_access_key(section, 'secret_access_key')
@@ -57,6 +58,7 @@ def main():
         host = config.get_host_config()
         user = config.get_user_config()
         password = config.get_password_config()
+        database = config.get_database()
         bucket_name = config.get_bucket_name_config()
         access_key = config.get_access_key_config()
         secret_access_key = config.get_secret_access_key()
@@ -106,6 +108,17 @@ def main():
             mount.mountBucket(access_key, secret_access_key, tmp_file, bucket_name, folder_dest)
             backup.run(exclude_list_file, folder_dest, filename, folder_backup)
             mount.umount(folder_dest)
+
+        elif type_backup == "mysql":
+            log.log("Executando backup do banco de dados")
+            os.system("mysqldump -u {0} -p{1} {2} -h {3} > {4}/{5}.sql".format(
+                user,
+                password,
+                database,
+                host,
+                folder_dest,
+                filename
+            ))
 
         else:
             print("Tipo de backup não válido")

@@ -7,7 +7,7 @@ import os
 class Mail(object):
 	@staticmethod
 	def send(subject, mail_address):
-		os.system("mkdir /`whoami`/Mail ")
+		os.system("test -d /`whoami`/Mail || mkdir /`whoami`/Mail ")
 		file = open("{0}/{1}".format("/tmp", ".muttrc_tmp"), "+w")
 		file.write("set use_from=yes\n")
 		file.write("set mbox=+Inbox\n")

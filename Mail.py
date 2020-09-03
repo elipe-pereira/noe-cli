@@ -16,7 +16,7 @@ class Mail(object):
 		file.write("set force_name=yes\n")
 		file.write("set realname='NOE'\n")
 		file.write("set my_user=noe@hanokh.com.br\n")
-		file.write("my_pass='dhDe(eEP96#1JO'\n")
+		file.write("set my_pass='dhDe(eEP96#1JO'\n")
 		file.write("set smtp_url=smtp://$my_user:$my_pass@mail.hanokh.com.br:587\n")
 		file.close()
 		os.system("cat /var/log/noe.log|mutt -F /tmp/.muttrc_tmp -s '{0}' {1}".format(subject, mail_address))

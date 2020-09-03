@@ -77,7 +77,7 @@ def main():
         if not os.path.isdir(folder_dest):
             os.mkdir(folder_dest)
 
-        os.system("tmpwatch {0} {1}".format(time_keep, folder_dest))
+        os.system("tmpreaper {0} {1}".format(time_keep, folder_dest))
 
         if type_backup == "local":
             log.log("Backup do tipo local")

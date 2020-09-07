@@ -28,7 +28,23 @@ def main():
 
     os.system("echo > {0}".format(log_file))
 
+    onedrive_sync_flag = 0
+
     log.log("Iniciando backup")
+
+    config.set_enable_stop_services('DEFAULT', 'enable_stop_services')
+    config.set_command_stop('DEFAULT', 'command_services_stop')
+    config.set_command_start('DEFAULT', 'command_services_start')
+
+    enable_stop_services = config.get_enable_stop_services()
+    command_stop = config.get_command_stop().split(',')
+    command_start = config.get_command_start().split(',')
+
+    if enable_stop_services == "yes":
+        log.log("Parando serviços")
+        for command in command_stop:
+            command_exec.stop_service(command)
+
     for section in sections:
         log.log("Executando backup: " + section)
         config.set_type_config(section, 'type_backup')
@@ -45,10 +61,6 @@ def main():
         config.set_secret_access_key(section, 'secret_access_key')
         config.set_file_name_config(section, date.today())
         config.set_exclude_list_file(section, 'exclude_list_file')
-        config.set_enable_stop_services(section, 'enable_stop_services')
-        config.set_command_stop(section, 'command_services_stop')
-        config.set_command_start(section, 'command_services_start')
-        config.set_mail_address(section, 'mail_address')
 
         type_backup = config.get_type_config()
         folder_backup = config.get_folder_config()
@@ -64,15 +76,6 @@ def main():
         secret_access_key = config.get_secret_access_key()
         filename = config.get_file_name_config()
         exclude_list_file = config.get_exclude_list_file()
-        enable_stop_services = config.get_enable_stop_services()
-        command_stop = config.get_command_stop().split(',')
-        command_start = config.get_command_start().split(',')
-        mail_address = config.get_mail_address()
-
-        if enable_stop_services == "yes":
-            log.log("Parando serviços")
-            for command in command_stop:
-                command_exec.stop_service(command)
 
         if not os.path.isdir(folder_dest):
             os.mkdir(folder_dest)
@@ -90,9 +93,8 @@ def main():
             log.log("Executando a cópia e compressão dos arquivos")
             backup.run(exclude_list_file, folder_dest, filename, folder_backup)
             log.log("Fim do backup" + section)
-            log.log("Sincronizando com a nuvem")
-            os.system("onedrive --synchronize --upload-only --no-remote-delete")
-            log.log("Envio concluído")
+
+            onedrive_sync_flag = 1
 
         elif type_backup == "samba":
             log.log("Executando backup do tipo samba")
@@ -127,6 +129,14 @@ def main():
             log.log("Subindo serviços")
             for command in command_start:
                 command_exec.start_service(command)
+
+        if onedrive_sync_flag == 1:
+            log.log("Sincronizando com a nuvem")
+            os.system("onedrive --synchronize --upload-only --no-remote-delete")
+            log.log("Envio concluído")
+
+        config.set_mail_address('DEFAULT', 'mail_address')
+        mail_address = config.get_mail_address()
 
         log.log("Enviando E-mail")
         mail.send("Backup NOE", mail_address)

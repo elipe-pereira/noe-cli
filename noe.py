@@ -46,6 +46,9 @@ def main():
             command_exec.stop_service(command)
 
     for section in sections:
+        if section == 'DEFAULT':
+            continue
+
         log.log("Executando backup: " + section)
         config.set_type_config(section, 'type_backup')
         config.set_folder_config(section, 'folder_backup')

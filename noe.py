@@ -92,7 +92,7 @@ def main():
             log.log("Backup do tipo local-sync-onedrive")
             log.log("Executando a cópia e compressão dos arquivos")
             backup.run(exclude_list_file, folder_dest, filename, folder_backup)
-            log.log("Fim do backup" + section)
+            log.log("Fim do backup " + section)
 
             onedrive_sync_flag = 1
 
@@ -102,13 +102,17 @@ def main():
             mount.mountSamba(host, remote_share, folder_dest, user, password)
             log.log("Executando cópia e compressão dos arquivos")
             backup.run(exclude_list_file, folder_dest, filename, folder_backup)
+            log.log("Fim do backup " + section)
             log.log("Desmontando compartilhamento")
             mount.umount(folder_dest)
 
         elif type_backup == "bucket":
             tmp_file = "/tmp/.passwd-s3fs"
+            log.log("Montando o bucket")
             mount.mountBucket(access_key, secret_access_key, tmp_file, bucket_name, folder_dest)
+            log.log("Executando a cópia e compactação dos arquivos")
             backup.run(exclude_list_file, folder_dest, filename, folder_backup)
+            log.log("Demontando bucket")
             mount.umount(folder_dest)
 
         elif type_backup == "mysql":
@@ -121,6 +125,7 @@ def main():
                 folder_dest,
                 filename
             ))
+            log.log("Backup do banco de dados concluído")
 
         else:
             print("Tipo de backup não válido")

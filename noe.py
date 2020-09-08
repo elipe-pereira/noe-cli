@@ -133,21 +133,21 @@ def main():
         else:
             print("Tipo de backup não válido")
 
-        if enable_stop_services == "yes":
-            log.log("Subindo serviços")
-            for command in command_start:
-                command_exec.start_service(command)
+    if enable_stop_services == "yes":
+        log.log("Subindo serviços")
+        for command in command_start:
+            command_exec.start_service(command)
 
-        if onedrive_sync_flag == 1:
-            log.log("Sincronizando com a nuvem")
-            os.system("onedrive --synchronize --upload-only --no-remote-delete")
-            log.log("Envio concluído")
+    if onedrive_sync_flag == 1:
+        log.log("Sincronizando com a nuvem")
+        os.system("onedrive --synchronize --upload-only --no-remote-delete")
+        log.log("Envio concluído")
 
-        config.set_mail_address('DEFAULT', 'mail_address')
-        mail_address = config.get_mail_address()
+    config.set_mail_address('DEFAULT', 'mail_address')
+    mail_address = config.get_mail_address()
 
-        log.log("Enviando E-mail")
-        mail.send("Backup NOE", mail_address)
+    log.log("Enviando E-mail")
+    mail.send("Backup NOE", mail_address)
 
 
 if __name__ == '__main__':

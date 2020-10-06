@@ -128,6 +128,8 @@ def main():
                 folder_dest,
                 filename
             ))
+            os.system("tar -zcvf {0}/{1}.tar.gz {0}/{1}.sql".format(folder_dest, filename))
+            os.system("rm {0}/{1}.sql".format(folder_dest, filename))
             log.log("Backup do banco de dados concluído")
 
         else:

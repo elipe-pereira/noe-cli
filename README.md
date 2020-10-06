@@ -195,7 +195,7 @@ O tipo de backup mysql, você precisará informar a pasta de destino folder_dest
 
   * s3fs
   * mutt
-	* cifs-utils
+  * cifs-utils
   * onedrive
   * mariadb-client
   * tar

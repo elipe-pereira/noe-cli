@@ -16,9 +16,8 @@ O backup é todo parametrizado no arquivo de configuração /etc/noe/noe.conf.
 
 Após configurado, basta executar o comando:
 
-<code>
-# noe
-</code>
+    # noe
+
 
 o backup será executado e os arquivos que foram copiados e comprimidos aparecerão na tela via linha de comando.
 
@@ -26,9 +25,11 @@ Para agendar uma vez por semana o backup, foi utilizado o programa cron, ao qual
 
 A configuração efetuada foi a seguinte:
 
-<code>
-00 01   * * 7 root /usr/bin/noe
-</code>
+
+    00 01   * * 7 root /usr/bin/noe
+
+>
+
 
 A ordem de datas é a seguinte:
 
@@ -41,28 +42,27 @@ o backup executará todo domingo às 01:00 da madrugada em qualquer dia do mês 
 
 ## Configuração do backup
 
-<code>
-[DEFAULT]
-mail_address =
-enable_stop_services = no
-command_services_stop = systemctl stop syslog
-command_services_start = systemctl start syslog
+    [DEFAULT]
+    mail_address =
+    enable_stop_services = no
+    command_services_stop = systemctl stop syslog
+    command_services_start = systemctl start syslog
 
-[backup-full]
-type_backup = local-sync-onedrive
-folder_dest = /root/OneDrive/lgpdcanaldotitular/backup_offsite_DO
-folder_backup = /
-time_keep = 30d
-remote_share =
-host =
-user =
-password =
-database =
-exclude_list_file = /etc/noe/exclude_list.txt
-bucket_name =
-access_key =
-secret_access_key =
-</code>
+    [backup-full]
+    type_backup = local-sync-onedrive
+    folder_dest = /root/OneDrive/lgpdcanaldotitular/backup_offsite_DO
+    folder_backup = /
+    time_keep = 30d
+    remote_share =
+    host =
+    user =
+    password =
+    database =
+    exclude_list_file = /etc/noe/exclude_list.txt
+    bucket_name =
+    access_key =
+    secret_access_key =
+>
 
 Os backups são divididos em seções, cada seção tem o nome cercado por colchetes. Podem haver inúmeras seções de backup e elas serão executadas sequencilamente de cima para baixo. A Seção [DEFAULT] define alguns parâmetros que devem ser iguais em todas as configurações de backup.
 
@@ -76,28 +76,28 @@ O arquivo compactado gerado pelo noe no backup terá o nome da seção + dia do 
 
 O noe possui suporte a sincronização via upload para a nuvem OneDrive da Microsoft. Então se você deseja sincronizar seu backup com a nuvem, você deve colocar o parâmetro type_backup = local-sync-onedrive e o parâmetro folder_dest (Pasta destino do backup) precisa estar apontando para um pasta dentro de /root/OneDrive porque essa é a pasta default de sincronização.
 
-Backup via Samba
+## Backup via Samba
 
-[DEFAULT]
-mail_address =
-enable_stop_services = no
-command_services_stop = systemctl stop syslog
-command_services_start = systemctl start syslog
+    [DEFAULT]
+    mail_address =
+    enable_stop_services = no
+    command_services_stop = systemctl stop syslog
+    command_services_start = systemctl start syslog
 
-[backup-full]
-type_backup = samba
-folder_dest = /mnt/backup
-folder_backup = /
-time_keep = 30d
-remote_share = backup
-host = 192.168.1.200
-user = test
-password = test
-database =
-exclude_list_file = /etc/noe/exclude_list.txt
-bucket_name =
-access_key =
-secret_access_key =
+    [backup-full]
+    type_backup = samba
+    folder_dest = /mnt/backup
+    folder_backup = /
+    time_keep = 30d
+    remote_share = backup
+    host = 192.168.1.200
+    user = test
+    password = test
+    database =
+    exclude_list_file = /etc/noe/exclude_list.txt
+    bucket_name =
+    access_key =
+    secret_access_key =
 
 
 Em backups via samba, os campos remote_share, host, user e password devem ser preenchidos adequadamente para que a montagem do compartilhamento samba possa ser efetuado adequadamente. A pasta definida em folder_dest deverá ser uma pasta válida e será nela que o compartilhamento será montado.
@@ -106,80 +106,80 @@ Os parametros command_services_stop e command_services_start, são comandos para
 
 O parametro type_backup é quem define que tipo de backup será e de acordo com o tipo, alguns parametros precisam ser preenchidos e outros podem ser deixados em branco.
 
-Backup Local
+## Backup Local
 
-[DEFAULT]
-mail_address =
-enable_stop_services = no
-command_services_stop = systemctl stop syslog
-command_services_start = systemctl start syslog
+    [DEFAULT]
+    mail_address =
+    enable_stop_services = no
+    command_services_stop = systemctl stop syslog
+    command_services_start = systemctl start syslog
 
-[backup-full]
-type_backup = local
-folder_dest = /mnt/backup
-folder_backup = /
-time_keep = 30d
-remote_share = backup
-host =
-user = test
-password = test
-database =
-exclude_list_file = /etc/noe/exclude_list.txt
-bucket_name =
-access_key =
-secret_access_key =
+    [backup-full]
+    type_backup = local
+    folder_dest = /mnt/backup
+    folder_backup = /
+    time_keep = 30d
+    remote_share = backup
+    host =
+    user = test
+    password = test
+    database =
+    exclude_list_file = /etc/noe/exclude_list.txt
+    bucket_name =
+    access_key =
+    secret_access_key =
 
 
 Com o backup do tipo local (type_backup = local), você somente precisará informar folder_dest ou seja, onde será armazenado o backup e o folder_backup que é a pasta que será copiada e compactada no backup.
 
 
-Backup Bucket AWS
+## Backup Bucket AWS
 
-[DEFAULT]
-mail_address =
-enable_stop_services = no
-command_services_stop = systemctl stop syslog
-command_services_start = systemctl start syslog
+    [DEFAULT]
+    mail_address =
+    enable_stop_services = no
+    command_services_stop = systemctl stop syslog
+    command_services_start = systemctl start syslog
 
-[backup-full]
-type_backup = bucket
-folder_dest = /mnt/backup
-folder_backup = /
-time_keep = 30d
-remote_share = backup
-host =
-user = test
-password = test
-database =
-exclude_list_file = /etc/noe/exclude_list.txt
-bucket_name = meubucket
-access_key = acesskey
-secret_access_key = secrekeyaws
+    [backup-full]
+    type_backup = bucket
+    folder_dest = /mnt/backup
+    folder_backup = /
+    time_keep = 30d
+    remote_share = backup
+    host =
+    user = test
+    password = test
+    database =
+    exclude_list_file = /etc/noe/exclude_list.txt
+    bucket_name = meubucket
+    access_key = acesskey
+    secret_access_key = secrekeyaws
 
 
 O backup do tipo bucket, irá montar um compartilhamento via s3fs com o bucket da Amazon AWS. Você precisará informar o nome do bucket que será montado em folder_dest, o access_key e secret_access_key. Caso o nome do bucket, access_key e secret_access_key estejam corretos, o backup ocorrerá normalmente.
 
-Backup MySQL
+## Backup MySQL
 
-[DEFAULT]
-mail_address =
-enable_stop_services = no
-command_services_stop = systemctl stop syslog
-command_services_start = systemctl start syslog
+    [DEFAULT]
+    mail_address =
+    enable_stop_services = no
+    command_services_stop = systemctl stop syslog
+    command_services_start = systemctl start syslog
 
-[backup-db-xxx-mysql]
-type_backup = mysql
-folder_dest = /mnt/backup
-folder_backup =
-time_keep = 30d
-remote_share = backup
-host = localhost
-user = test
-password = test
-database =
-exclude_list_file = /etc/noe/exclude_list.txt
-bucket_name =
-access_key =
-secret_access_key =
+    [backup-db-xxx-mysql]
+    type_backup = mysql
+    folder_dest = /mnt/backup
+    folder_backup =
+    time_keep = 30d
+    remote_share = backup
+    host = localhost
+    user = test
+    password = test
+    database =
+    exclude_list_file = /etc/noe/exclude_list.txt
+    bucket_name =
+    access_key =
+    secret_access_key =
 
 O tipo de backup mysql, você precisará informar a pasta de destino folder_dest, host, user, password e database que você quer fazer o backup. Para cada base de dados é necessário uma configuração em uma nova seção.

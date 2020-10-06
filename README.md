@@ -194,11 +194,11 @@ O tipo de backup mysql, você precisará informar a pasta de destino folder_dest
 ## Dependências
 
   * s3fs
-	* mutt
+  * mutt
 	* cifs-utils
-	* onedrive
-	* mariadb-client
-	* tar
+  * onedrive
+  * mariadb-client
+  * tar
 
 O tar é o único programa que já vem nativo na maioria das distribuições Linux,
 então você não terá problemas em executar um backup local. Porém se você quiser

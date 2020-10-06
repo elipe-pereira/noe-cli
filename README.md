@@ -9,6 +9,13 @@
 
  - /etc/noe/noe.conf
 
+## A quê se destina
+
+o Noe é uma ferramenta de backup para servidores Linux, ele foi criado para
+ser simples e sua execução com apenas um comando. Sua execução também pode ser
+acompanhada via log. O arquivo de log é /var/log/noe.log. Após o términdo do
+backup, o noe tentará enviar esse log por e-mail, se a conta de e-mail estiver
+devidamente configurada.
 
 ## Comando
 
@@ -183,3 +190,64 @@ O backup do tipo bucket, irá montar um compartilhamento via s3fs com o bucket d
     secret_access_key =
 
 O tipo de backup mysql, você precisará informar a pasta de destino folder_dest, host, user, password e database que você quer fazer o backup. Para cada base de dados é necessário uma configuração em uma nova seção.
+
+## Dependências
+
+  - s3fs
+	- mutt
+	- cifs-utils
+	- onedrive
+	- mariadb-client
+	- tar
+
+O tar é o único programa que já vem nativo na maioria das distribuições Linux,
+então você não terá problemas em executar um backup local. Porém se você quiser
+estender para o envio via Samba, buckets AWS, backup do mysql e enviar email ao fim
+do backup, é bom você se certificar que todas as dependências estão instaladas.
+
+## Ajude Nos
+
+Você gostou do programa e está sendo útil ? envie seus comentário e sugestões
+de melhoria para:
+
+ - elipe.pereira@gmail.com
+
+Talvez você esteja usando no trabalho ou no seu Desktop Linux e o noe esteja
+quebrando um bom galho. Que tal ajudar o projeto. Envie doações via paypal para o e-mail acima ou
+deposite na minha conta na Nubank:
+  - AG: 0001 - Conta: 97323880-1 Eli Florêncio Pereira.
+
+Sua ajuda será muito bem vinda !!
+
+## Instalação
+
+Para o você usar o noe sem problemas. Baixe o projeto e descompacte em
+ - /usr/share
+
+Assim, a pasta do projeto será /usr/share/noe.
+
+como usuário root crie o link simbólico para um pasta dentro do PATH, assim:
+
+    # ln -s /usr/share/noe/noe.py /usr/bin/noe
+
+Crie uma link simbólico para a pasta de configuração em /etc, assim:
+
+   # ln -s /usr/share/noe/config/noe /etc/noe
+
+
+Você pode editar suas configurações por /etc/noe.
+
+Ao atualizar, basta descompactar novamente a pasta deste repositório em
+/usr/share. Mas lembre se que isso apagar suas configurações atuais. Então não se
+esqueça de copiar os arquivos exclude-list, noe.conf e muttrc para um local seguro.
+
+    # mkdir /tmp/backup_temporiario
+		# cp -av /etc/noe/* /tmp/backup_temporiario
+		# unzip noe.zip
+		# cp -av noe /usr/share
+		# cp -av /tmp/backup_temporiario/* /etc/noe
+
+Não esqueça também de verificar antes de voltar o backup dos arquivos de configuração
+se novos parâmetros de configuração não foram adicionados no arquivo de
+configuração modelo. Caso você perceba a diferença, não esqueça de adiciona los
+no seu arquivo de configuração.  

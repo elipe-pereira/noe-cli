@@ -5,17 +5,20 @@
 
  - Noe
 
-Arquivo de configuração:
-/etc/noe/noe.conf
+## Arquivo de configuração:
+
+ - /etc/noe/noe.conf
 
 
-Comando
+## Comando
 
 O backup é todo parametrizado no arquivo de configuração /etc/noe/noe.conf.
 
 Após configurado, basta executar o comando:
 
+<code>
 # noe
+</code>
 
 o backup será executado e os arquivos que foram copiados e comprimidos aparecerão na tela via linha de comando.
 
@@ -23,7 +26,9 @@ Para agendar uma vez por semana o backup, foi utilizado o programa cron, ao qual
 
 A configuração efetuada foi a seguinte:
 
+<code>
 00 01   * * 7 root /usr/bin/noe
+</code>
 
 A ordem de datas é a seguinte:
 
@@ -34,12 +39,9 @@ Ou seja:
 o backup executará todo domingo às 01:00 da madrugada em qualquer dia do mês e qualquer mês do ano.
 
 
+## Configuração do backup
 
-
-
-
-Configuração do backup
-
+<code>
 [DEFAULT]
 mail_address =
 enable_stop_services = no
@@ -60,6 +62,7 @@ exclude_list_file = /etc/noe/exclude_list.txt
 bucket_name =
 access_key =
 secret_access_key =
+</code>
 
 Os backups são divididos em seções, cada seção tem o nome cercado por colchetes. Podem haver inúmeras seções de backup e elas serão executadas sequencilamente de cima para baixo. A Seção [DEFAULT] define alguns parâmetros que devem ser iguais em todas as configurações de backup.
 

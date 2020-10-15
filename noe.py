@@ -4,11 +4,11 @@ import os
 import sys
 from datetime import date
 from config.Config import Config
-from Backup import Backup
-from Mount import Mount
-from Services import Services
-from Log import Log
-from Mail import Mail
+from backup import Backup
+from mount import Mount
+from services import Services
+from log import Log
+from mail import Mail
 
 
 def main():
@@ -43,7 +43,7 @@ def main():
     if enable_stop_services == "yes":
         log.log("Parando serviços")
         for command in command_stop:
-/            command_exec.stop_service(command)
+            command_exec.stop_service(command)
 
     for section in sections:
         if section == 'DEFAULT':
@@ -150,7 +150,8 @@ def main():
     if local_sync_onedrive_flag == 1:
         log.log("Sincronizando pasta de backup com a nuvem")
         folder_sync_onedrive = os.path.basename(folder_dest)
-        os.system("onedrive --synchronize --single-directory {0}".format(folder_sync_onedrive))
+        os.system("onedrive --synchronize --upload-only --no-remote-delete")
+        os.system("onedrive --synchronize --single-directory '{0}'".format(folder_sync_onedrive))
         log.log("Envio concluído")
 
     elif send_file_onedrive_flag == 1:

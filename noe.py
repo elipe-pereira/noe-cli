@@ -4,18 +4,18 @@ import os
 import sys
 from datetime import date
 from config.Config import Config
-from Backup import Backup
-from Mount import Mount
-from Services import Services
-from Log import Log
-from Mail import Mail
+from backup import Backup
+from mount import Mount
+from services import Services
+from log import Log
+from mail import Mail
 
 
 def main():
     main_file_exec_path = os.path.realpath(sys.argv[0])
     working_dir = os.path.dirname(main_file_exec_path)
     config_file = working_dir + "/config/noe/noe.conf"
-    
+
     config = Config(config_file)
     backup = Backup()
     mount = Mount()
@@ -28,7 +28,8 @@ def main():
 
     os.system("echo > {0}".format(log_file))
 
-    onedrive_sync_flag = 0
+    local_sync_onedrive_flag = 0
+    send_file_onedrive_flag = 0
 
     log.log("Iniciando backup")
 
@@ -97,7 +98,14 @@ def main():
             backup.run(exclude_list_file, folder_dest, filename, folder_backup)
             log.log("Fim do backup " + section)
 
-            onedrive_sync_flag = 1
+            local_sync_onedrive_flag = 1
+
+        elif type_backup == "send-file-onedrive":
+            log.log("Backup do tipo send-file-onedrive")
+            backup.run(exclude_list_file, folder_dest, filename, folder_backup)
+            log.log("Fim do backup " + section)
+
+            send_file_onedrive_flag = 1
 
         elif type_backup == "samba":
             log.log("Executando backup do tipo samba")
@@ -128,6 +136,8 @@ def main():
                 folder_dest,
                 filename
             ))
+            os.system("tar -zcvf {0}/{1}.tar.gz {0}/{1}.sql".format(folder_dest, filename))
+            os.system("rm {0}/{1}.sql".format(folder_dest, filename))
             log.log("Backup do banco de dados concluído")
 
         else:
@@ -138,10 +148,18 @@ def main():
         for command in command_start:
             command_exec.start_service(command)
 
-    if onedrive_sync_flag == 1:
-        log.log("Sincronizando com a nuvem")
+    if local_sync_onedrive_flag == 1:
+        log.log("Sincronizando pasta de backup com a nuvem")
+        folder_sync_onedrive = os.path.basename(folder_dest)
+        os.system("onedrive --synchronize --upload-only --no-remote-delete")
+        os.system("onedrive --synchronize --single-directory '{0}'".format(folder_sync_onedrive))
+        log.log("Envio concluído")
+
+    elif send_file_onedrive_flag == 1:
+        log.log("Enviando backup via upload para o onedrive")
         os.system("onedrive --synchronize --upload-only --no-remote-delete")
         log.log("Envio concluído")
+
 
     config.set_mail_address('DEFAULT', 'mail_address')
     mail_address = config.get_mail_address()

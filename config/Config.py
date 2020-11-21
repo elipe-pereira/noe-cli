@@ -28,6 +28,7 @@ class Config(object):
         self.__enable_stop_services = ""
         self.__command_stop = ""
         self.__command_start = ""
+        self.__server_name = ""
 
     def get_sections_config(self):
         return self.__sections_config
@@ -139,3 +140,10 @@ class Config(object):
 
     def get_command_start(self):
         return self.__command_start
+
+    def set_server_name(self, section, server_name):
+        self.__server_name = self.__config.get(section, server_name)
+
+    def get_server_name(self):
+        return self.__server_name
+        

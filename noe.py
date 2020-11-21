@@ -28,7 +28,6 @@ def main():
 
     os.system("echo > {0}".format(log_file))
 
-
     local_sync_onedrive_flag = 0
     send_file_onedrive_flag = 0
 
@@ -37,6 +36,7 @@ def main():
     config.set_enable_stop_services('DEFAULT', 'enable_stop_services')
     config.set_command_stop('DEFAULT', 'command_services_stop')
     config.set_command_start('DEFAULT', 'command_services_start')
+    config.set_server_name('DEFAULT', 'server_name')
 
     enable_stop_services = config.get_enable_stop_services()
     command_stop = config.get_command_stop().split(',')
@@ -164,9 +164,11 @@ def main():
 
     config.set_mail_address('DEFAULT', 'mail_address')
     mail_address = config.get_mail_address()
+    server_name = config.get_server_name()
 
-    log.log("Enviando E-mail")
-    mail.send("Backup NOE", mail_address)
+    if mail_address:
+        log.log("Enviando E-mail")
+        mail.send("Backup NOE - {0}".format(server_name), mail_address)
 
 
 if __name__ == '__main__':

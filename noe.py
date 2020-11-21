@@ -28,6 +28,7 @@ def main():
 
     os.system("echo > {0}".format(log_file))
 
+
     local_sync_onedrive_flag = 0
     send_file_onedrive_flag = 0
 

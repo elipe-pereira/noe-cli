@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
+# coding: utf-8
+
 import os
-import sys
 from datetime import date
 from config.Config import Config
 from backup import Backup
@@ -12,9 +12,9 @@ from mail import Mail
 
 
 def main():
-    main_file_exec_path = os.path.realpath(sys.argv[0])
-    working_dir = os.path.dirname(main_file_exec_path)
-    config_file = working_dir + "/config/noe/noe.conf"
+    main_file = os.path.realpath(__file__)
+    basepath = os.path.dirname(main_file)
+    config_file = basepath + "/config/noe/noe.conf"
 
     config = Config(config_file)
     backup = Backup()
@@ -160,7 +160,6 @@ def main():
         log.log("Enviando backup via upload para o onedrive")
         os.system("onedrive --synchronize --upload-only --no-remote-delete")
         log.log("Envio concluído")
-
 
     config.set_mail_address('DEFAULT', 'mail_address')
     mail_address = config.get_mail_address()

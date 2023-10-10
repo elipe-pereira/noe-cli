@@ -1,15 +1,15 @@
-## Backup e recovery
+#### Backup e recovery
 
 
-## Ferramenta de backup:
+#### Ferramenta de backup:
 
  - Noe
 
-## Arquivo de configuração:
+#### Arquivo de configuração:
 
  - /etc/noe/noe.conf
 
-## A quê se destina
+#### A quê se destina
 
 o Noe é uma ferramenta de backup para servidores Linux, ele foi criado para
 ser simples e sua execução com apenas um comando. Sua execução também pode ser
@@ -17,7 +17,7 @@ acompanhada via log. O arquivo de log é /var/log/noe.log. Após o términdo do
 backup, o noe tentará enviar esse log por e-mail, se a conta de e-mail estiver
 devidamente configurada.
 
-## Comando
+#### Comando
 
 O backup é todo parametrizado no arquivo de configuração /etc/noe/noe.conf.
 
@@ -47,7 +47,7 @@ Ou seja:
 o backup executará todo domingo às 01:00 da madrugada em qualquer dia do mês e qualquer mês do ano.
 
 
-## Configuração do backup
+#### Configuração do backup
 
     [DEFAULT]
     mail_address =
@@ -83,7 +83,7 @@ O arquivo compactado gerado pelo noe no backup terá o nome da seção + dia do 
 
 O noe possui suporte a sincronização via upload para a nuvem OneDrive da Microsoft. Então se você deseja sincronizar seu backup com a nuvem, você deve colocar o parâmetro type_backup = local-sync-onedrive e o parâmetro folder_dest (Pasta destino do backup) precisa estar apontando para um pasta dentro de /root/OneDrive porque essa é a pasta default de sincronização.
 
-## Backup via Samba
+#### Backup via Samba
 
     [DEFAULT]
     mail_address =
@@ -113,7 +113,7 @@ Os parametros command_services_stop e command_services_start, são comandos para
 
 O parametro type_backup é quem define que tipo de backup será e de acordo com o tipo, alguns parametros precisam ser preenchidos e outros podem ser deixados em branco.
 
-## Backup Local
+#### Backup Local
 
     [DEFAULT]
     mail_address =
@@ -140,7 +140,7 @@ O parametro type_backup é quem define que tipo de backup será e de acordo com 
 Com o backup do tipo local (type_backup = local), você somente precisará informar folder_dest ou seja, onde será armazenado o backup e o folder_backup que é a pasta que será copiada e compactada no backup.
 
 
-## Backup Bucket AWS
+#### Backup Bucket AWS
 
     [DEFAULT]
     mail_address =
@@ -166,7 +166,7 @@ Com o backup do tipo local (type_backup = local), você somente precisará infor
 
 O backup do tipo bucket, irá montar um compartilhamento via s3fs com o bucket da Amazon AWS. Você precisará informar o nome do bucket que será montado em folder_dest, o access_key e secret_access_key. Caso o nome do bucket, access_key e secret_access_key estejam corretos, o backup ocorrerá normalmente.
 
-## Backup MySQL
+#### Backup MySQL
 
     [DEFAULT]
     mail_address =
@@ -191,7 +191,7 @@ O backup do tipo bucket, irá montar um compartilhamento via s3fs com o bucket d
 
 O tipo de backup mysql, você precisará informar a pasta de destino folder_dest, host, user, password e database que você quer fazer o backup. Para cada base de dados é necessário uma configuração em uma nova seção.
 
-## Dependências
+#### Dependências
 
   * s3fs
   * mutt
@@ -205,7 +205,7 @@ então você não terá problemas em executar um backup local. Porém se você q
 estender para o envio via Samba, buckets AWS, backup do mysql e enviar email ao fim
 do backup, é bom você se certificar que todas as dependências estão instaladas.
 
-## Ajude Nos
+#### Ajude Nos
 
 Você gostou do programa e está sendo útil ? envie seus comentário e sugestões
 de melhoria para:
@@ -213,13 +213,12 @@ de melhoria para:
  - elipe.pereira@gmail.com
 
 Talvez você esteja usando no trabalho ou no seu Desktop Linux e o noe esteja
-quebrando um bom galho. Que tal ajudar o projeto. Envie doações via paypal para o e-mail acima ou
-deposite na minha conta na Nubank:
-  - AG: 0001 - Conta: 97323880-1 Eli Florêncio Pereira.
+quebrando um bom galho. Que tal ajudar o projeto. Envie doações via paypal para o e-mail acima ou pix.
+  - elipe.pereira@gmail.com - Eli Florêncio Pereira.
 
 Sua ajuda será muito bem vinda !!
 
-## Instalação
+#### Instalação
 
 Para você usar o noe sem problemas. Baixe o projeto e descompacte em
  - /usr/share

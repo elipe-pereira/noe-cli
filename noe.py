@@ -12,16 +12,17 @@ from mail import Mail
 
 
 def main():
-    main_file = os.path.realpath(__file__)
-    basepath = os.path.dirname(main_file)
+    # Arquivo executável principal
+    file = os.path.realpath(__file__)
+    basepath = os.path.dirname(file)
     config_file = basepath + "/config/noe/noe.conf"
 
-    config = Config(config_file)
-    backup = Backup()
-    mount = Mount()
-    command_exec = Services()
     log = Log()
     mail = Mail()
+    mount = Mount()
+    backup = Backup()
+    command_exec = Services()
+    config = Config(config_file)
 
     sections = config.get_sections_config()
     log_file = log.get_log_file()
@@ -90,20 +91,32 @@ def main():
         if type_backup == "local":
             log.log("Backup do tipo local")
             log.log("Executando cópia e compressão dos arquivos")
-            backup.run(exclude_list_file, folder_dest, filename, folder_backup)
+            backup.run(
+                exclude_list_file,
+                folder_dest, filename,
+                folder_backup
+            )
             log.log("Fim do backup " + section)
 
         elif type_backup == "local-sync-onedrive":
             log.log("Backup do tipo local-sync-onedrive")
             log.log("Executando a cópia e compressão dos arquivos")
-            backup.run(exclude_list_file, folder_dest, filename, folder_backup)
+            backup.run(
+                exclude_list_file,
+                folder_dest, filename,
+                folder_backup
+            )
             log.log("Fim do backup " + section)
 
             local_sync_onedrive_flag = 1
 
         elif type_backup == "send-file-onedrive":
             log.log("Backup do tipo send-file-onedrive")
-            backup.run(exclude_list_file, folder_dest, filename, folder_backup)
+            backup.run(
+                exclude_list_file,
+                folder_dest, filename,
+                folder_backup
+            )
             log.log("Fim do backup " + section)
 
             send_file_onedrive_flag = 1
@@ -111,9 +124,20 @@ def main():
         elif type_backup == "samba":
             log.log("Executando backup do tipo samba")
             log.log("Montando compartilhamento")
-            mount.mountSamba(host, remote_share, folder_dest, user, password)
+            mount.mountSamba(
+                host,
+                remote_share,
+                folder_dest,
+                user,
+                password
+            )
             log.log("Executando cópia e compressão dos arquivos")
-            backup.run(exclude_list_file, folder_dest, filename, folder_backup)
+            backup.run(
+                exclude_list_file,
+                folder_dest,
+                filename,
+                folder_backup
+            )
             log.log("Fim do backup " + section)
             log.log("Desmontando compartilhamento")
             mount.umount(folder_dest)
@@ -121,9 +145,20 @@ def main():
         elif type_backup == "bucket":
             tmp_file = "/tmp/.passwd-s3fs"
             log.log("Montando o bucket")
-            mount.mountBucket(access_key, secret_access_key, tmp_file, bucket_name, folder_dest)
+            mount.mountBucket(
+                access_key,
+                secret_access_key,
+                tmp_file,
+                bucket_name,
+                folder_dest
+            )
             log.log("Executando a cópia e compactação dos arquivos")
-            backup.run(exclude_list_file, folder_dest, filename, folder_backup)
+            backup.run(
+                exclude_list_file,
+                folder_dest,
+                filename,
+                folder_backup
+            )
             log.log("Demontando bucket")
             mount.umount(folder_dest)
 
@@ -137,7 +172,11 @@ def main():
                 folder_dest,
                 filename
             ))
-            os.system("tar -zcvf {0}/{1}.tar.gz {0}/{1}.sql".format(folder_dest, filename))
+            os.system("tar -zcvf {0}/{1}.tar.gz {0}/{1}.sql".format(
+                folder_dest,
+                filename
+                )
+            )
             os.system("rm {0}/{1}.sql".format(folder_dest, filename))
             log.log("Backup do banco de dados concluído")
 
@@ -153,7 +192,10 @@ def main():
         log.log("Sincronizando pasta de backup com a nuvem")
         folder_sync_onedrive = os.path.basename(folder_dest)
         os.system("onedrive --synchronize --upload-only --no-remote-delete")
-        os.system("onedrive --synchronize --single-directory '{0}'".format(folder_sync_onedrive))
+        os.system("onedrive --synchronize --single-directory '{0}'".format(
+            folder_sync_onedrive
+            )
+        )
         log.log("Envio concluído")
 
     elif send_file_onedrive_flag == 1:

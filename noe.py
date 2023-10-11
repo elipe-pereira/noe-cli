@@ -1,20 +1,26 @@
 #!/usr/bin/python3
 # coding: utf-8
 
-import os
+from os import mkdir
+from os import system
 from datetime import date
-from config.Config import Config
-from backup import Backup
-from mount import Mount
-from services import Services
+from os.path import isdir
+from os.path import dirname
+from os.path import realpath
+from os.path import basename
+
 from log import Log
 from mail import Mail
+from mount import Mount
+from backup import Backup
+from services import Services
+from config.Config import Config
 
 
 def main():
     # Arquivo executável principal
-    file = os.path.realpath(__file__)
-    basepath = os.path.dirname(file)
+    file = realpath(__file__)
+    basepath = dirname(file)
     config_file = basepath + "/config/noe/noe.conf"
 
     log = Log()
@@ -27,7 +33,7 @@ def main():
     sections = config.get_sections_config()
     log_file = log.get_log_file()
 
-    os.system("echo > {0}".format(log_file))
+    system("echo > {0}".format(log_file))
 
     local_sync_onedrive_flag = 0
     send_file_onedrive_flag = 0
@@ -83,10 +89,10 @@ def main():
         filename = config.get_file_name_config()
         exclude_list_file = config.get_exclude_list_file()
 
-        if not os.path.isdir(folder_dest):
-            os.mkdir(folder_dest)
+        if not isdir(folder_dest):
+            mkdir(folder_dest)
 
-        os.system("tmpreaper {0} {1}".format(time_keep, folder_dest))
+        system("tmpreaper {0} {1}".format(time_keep, folder_dest))
 
         if type_backup == "local":
             log.log("Backup do tipo local")
@@ -164,20 +170,21 @@ def main():
 
         elif type_backup == "mysql":
             log.log("Executando backup do banco de dados")
-            os.system("mysqldump -u {0} -p{1} {2} -h {3} > {4}/{5}.sql".format(
+            system("mysqldump -u {0} -p{1} {2} -h {3} > {4}/{5}.sql".format(
                 user,
                 password,
                 database,
                 host,
                 folder_dest,
                 filename
-            ))
-            os.system("tar -zcvf {0}/{1}.tar.gz {0}/{1}.sql".format(
+                )
+            )
+            system("tar -zcvf {0}/{1}.tar.gz {0}/{1}.sql".format(
                 folder_dest,
                 filename
                 )
             )
-            os.system("rm {0}/{1}.sql".format(folder_dest, filename))
+            system("rm {0}/{1}.sql".format(folder_dest, filename))
             log.log("Backup do banco de dados concluído")
 
         else:
@@ -190,9 +197,9 @@ def main():
 
     if local_sync_onedrive_flag == 1:
         log.log("Sincronizando pasta de backup com a nuvem")
-        folder_sync_onedrive = os.path.basename(folder_dest)
-        os.system("onedrive --synchronize --upload-only --no-remote-delete")
-        os.system("onedrive --synchronize --single-directory '{0}'".format(
+        folder_sync_onedrive = basename(folder_dest)
+        system("onedrive --synchronize --upload-only --no-remote-delete")
+        system("onedrive --synchronize --single-directory '{0}'".format(
             folder_sync_onedrive
             )
         )
@@ -200,7 +207,7 @@ def main():
 
     elif send_file_onedrive_flag == 1:
         log.log("Enviando backup via upload para o onedrive")
-        os.system("onedrive --synchronize --upload-only --no-remote-delete")
+        system("onedrive --synchronize --upload-only --no-remote-delete")
         log.log("Envio concluído")
 
     config.set_mail_address('DEFAULT', 'mail_address')
